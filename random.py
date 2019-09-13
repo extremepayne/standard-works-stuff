@@ -17,5 +17,5 @@ with open(file_path, "r") as scripture_file:
         i += 1
 
 length = len(scriptures)
-choice = random.randint(length)
+choice = random.randint(0, length)
 print(scriptures[choice])
