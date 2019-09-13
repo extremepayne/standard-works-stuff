@@ -6,6 +6,11 @@ import random
 file_path = "lds-scriptures.json"
 
 scriptures = []
+book_of_mormon = []
+doctrine_and_covenants = []
+new_testament = []
+old_testament = []
+pearl_of_great_price = []
 
 with open(file_path, "r") as scripture_file:
     length_of_file = len(open(file_path).readlines())
