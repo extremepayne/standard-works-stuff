@@ -11,6 +11,13 @@ doctrine_and_covenants = []
 new_testament = []
 old_testament = []
 pearl_of_great_price = []
+books_of_scripture = {
+    1: old_testament,
+    2: new_testament,
+    3: book_of_mormon,
+    4: doctrine_and_covenants,
+    5: pearl_of_great_price,
+}
 
 with open(file_path, "r") as scripture_file:
     length_of_file = len(open(file_path).readlines())
@@ -19,18 +26,25 @@ with open(file_path, "r") as scripture_file:
         verse = scripture_file.readline()
         verse = json.loads(verse)
         scriptures.append(verse)
+        books_of_scripture[verse["volume_id"]].append(verse)
         i += 1
 
 
 def get_random_verse(volume_id="all"):
     if volume_id == "all":
         return random.choice(scriptures)
-    elif isinstance(volume_id, int) and volume_id >=1 and volume_id <= 5:
-        return("unimplemented.")
+    elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
+        return random.choice(books_of_scripture[volume_id])
     else:
         raise TypeError
 
 
 rand_verse = get_random_verse()
+print("Random verse: ")
 print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
-print(rand_verse)
+# print(rand_verse)
+
+rand_verse = get_random_verse(3)  # from the book of mormon
+print("\nRandom verse, but only from the book of mormon: ")
+print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
+# print(rand_verse)
