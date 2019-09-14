@@ -31,6 +31,11 @@ with open(file_path, "r") as scripture_file:
 
 
 def get_random_verse(volume_id="all"):
+    """
+    Using the defined dictionaries, get a random verse.
+
+    Can be from all standard works (default) or a specific one.
+    """
     if volume_id == "all":
         return random.choice(scriptures)
     elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
@@ -42,9 +47,7 @@ def get_random_verse(volume_id="all"):
 rand_verse = get_random_verse()
 print("Random verse: ")
 print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
-# print(rand_verse)
 
 rand_verse = get_random_verse(3)  # from the book of mormon
 print("\nRandom verse, but only from the book of mormon: ")
 print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
-# print(rand_verse)
