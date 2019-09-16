@@ -43,11 +43,13 @@ def get_random_verse(volume_id="all"):
     else:
         raise TypeError
 
+def generate_curchofjesuschrist_url():
+    pass
 
 rand_verse = get_random_verse()
 print("Random verse: ")
 print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
 
-rand_verse = get_random_verse(3)  # from the book of mormon
-print("\nRandom verse, but only from the book of mormon: ")
-print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
+# rand_verse = get_random_verse(3)  # from the book of mormon
+# print("\nRandom verse, but only from the book of mormon: ")
+# print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
