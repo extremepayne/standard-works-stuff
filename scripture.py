@@ -10,10 +10,12 @@ Includes: lists of dicts representing verses:
 
 Functions for doing things:
     get_random_verse: returns a psuedo-random verse
-    generate_churchofjesuschrist_url: given a verse dict, generate the url to it
+    generate_churchofjesuschrist_url:
+    given a verse dict, generate the url to it
 """
 # pylint: disable=C0103
-import json, random
+import json
+import random
 
 file_path = "lds-scriptures.json"
 
