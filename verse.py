@@ -44,20 +44,31 @@ def get_random_verse(volume_id="all"):
         raise TypeError
 
 
-def generate_churchofjesuschrist_url(verse):
+def generate_churchofjesuschrist_url(verse):  # pylint: disable=W0621
+    """Generates a url to the actual scripture"""
     to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-    if verse["volume_lds_url"] != "bm":
-        to_return += verse["volume_lds_url"]
-    else:
+    if verse["volume_lds_url"] == "bm":
         to_return += "bofm"
-    return to_return + "/" + verse["book_lds_url"] + "/" + str(verse["chapter_number"]) \
-        + "." + str(verse["verse_number"]) + "?lang=eng#" + \
-        str(verse["verse_number"] - 1)
+    elif verse["volume_lds_url"] == "dc":
+        to_return += "dc-testament"
+    else:
+        to_return += verse["volume_lds_url"]
+    return (
+        to_return
+        + "/"
+        + verse["book_lds_url"]
+        + "/"
+        + str(verse["chapter_number"])
+        + "."
+        + str(verse["verse_number"])
+        + "?lang=eng#"
+        + str(verse["verse_number"] - 1)
+    )
 
 
 rand_verse = get_random_verse()
 print("Random verse: ")
-print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=': ')
+print(rand_verse["verse_title"], rand_verse["scripture_text"], sep=": ")
 print(generate_churchofjesuschrist_url(rand_verse))
 
 # rand_verse = get_random_verse(3)  # from the book of mormon
