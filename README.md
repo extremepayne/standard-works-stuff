@@ -1,5 +1,5 @@
 # standard-works-stuff
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black) [![license - unlicense](https://img.shields.io/badge/license-unlicense-blue)](https://unlicense.org/) ![GitHub top language](https://img.shields.io/github/languages/top/extremepayne/HighScor.svg) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com) 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black) [![Build Status](https://travis-ci.org/extremepayne/standard-works-stuff.svg?branch=master)](https://travis-ci.org/extremepayne/standard-works-stuff) [![license - unlicense](https://img.shields.io/badge/license-unlicense-blue)](https://unlicense.org/) ![GitHub top language](https://img.shields.io/github/languages/top/extremepayne/HighScor.svg) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com) 
 
 Unofficial; python programs relating to the standard works of the Church of Jesus Christ of Latter-day Saints.
 
