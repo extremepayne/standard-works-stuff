@@ -2,7 +2,7 @@ language: python
 notifications:
   email: false
 matrix:
-  - name: "Python 3.7.x on Xenial Linux"
+    - name: "Python 3.7.x on Xenial Linux"
       python: 3.7
       dist: xenial
       install: 
