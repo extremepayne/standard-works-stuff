@@ -6,15 +6,16 @@ matrix:
     - name: "Python 3.7.x on Xenial Linux"
       python: 3.7
       dist: xenial
-      install: 
+      install:
         - pip3 install --upgrade pip
-        - pip3 install flake8
+        - pip3 install flake8 pydocstyle
     - name: "Python nightly on Xenial Linux"
       python: "nightly"
       dist: xenial
-      install: 
+      install:
         - pip3 install --upgrade pip
-        - pip3 install flake8
+        - pip3 install flake8 pydocstyle
 script:
   - pytest
-  - flake8 scripture.py
+  - flake8 scripture.py verse.py test_scripture.py
+  - pydocstyle scripture.py

@@ -44,5 +44,5 @@ def test_generate_churchofjesuschrist_url():
     assert (
         first_verse_url
         == "https://www.churchofjesuschrist.org/\
-study/scriptures/bofm/1-ne/1.1?lang=eng#0"
+study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
     )

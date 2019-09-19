@@ -1,5 +1,5 @@
 """
-Defines a python interface for interacting with the scriptures
+Defines a python interface for interacting with the scriptures.
 
 Includes: lists of dicts representing verses:
     scriptures: all standard works
@@ -46,7 +46,7 @@ with open(file_path, "r") as scripture_file:
 
 def get_random_verse(volume_id="all"):
     """
-    Using the defined dictionaries, get a random verse.
+    Produce a random verse.
 
     Can be from all standard works (default) or a specific one.
     """
@@ -58,23 +58,31 @@ def get_random_verse(volume_id="all"):
         raise TypeError
 
 
-def generate_churchofjesuschrist_url(verse):  # pylint: disable=W0621
-    """Generates a url to the actual scripture"""
+def generate_churchofjesuschrist_url(location):  # pylint: disable=W0621
+    """Generate a url to the actual scripture."""
     to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-    if verse["volume_lds_url"] == "bm":
-        to_return += "bofm"
-    elif verse["volume_lds_url"] == "dc":
-        to_return += "dc-testament"
-    else:
-        to_return += verse["volume_lds_url"]
-    return (
-        to_return
-        + "/"
-        + verse["book_lds_url"]
-        + "/"
-        + str(verse["chapter_number"])
-        + "."
-        + str(verse["verse_number"])
-        + "?lang=eng#"
-        + str(verse["verse_number"] - 1)
-    )
+    if isinstance(location, dict) and "volume_lds_url" in location:
+        verse = location
+        # We assume that the location provided is a verse dcitionary
+        if verse["volume_lds_url"] == "bm":
+            to_return += "bofm"
+        elif verse["volume_lds_url"] == "dc":
+            to_return += "dc-testament"
+        else:
+            to_return += verse["volume_lds_url"]
+        to_return = (
+            to_return
+            + "/"
+            + verse["book_lds_url"]
+            + "/"
+            + str(verse["chapter_number"])
+            + "."
+            + str(verse["verse_number"])
+            + "?lang=eng#"
+        )
+        if verse["verse_number"] == 1:
+            return to_return + "p1"
+        else:
+            return to_return + str(verse["verse_number"] - 1)
+    else:  # Hope they gave us a volume string
+        return to_return + location
