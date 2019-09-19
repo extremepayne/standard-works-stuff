@@ -58,7 +58,7 @@ def get_random_verse(volume_id="all"):
         raise TypeError
 
 
-def generate_churchofjesuschrist_url(location, chapter = False):  # pylint: disable=W0621
+def generate_churchofjesuschrist_url(location, chapter=False):
     """Generate a url to the actual scripture."""
     to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
     if isinstance(location, dict) and "volume_lds_url" in location:
@@ -85,7 +85,7 @@ def generate_churchofjesuschrist_url(location, chapter = False):  # pylint: disa
                 return to_return + "p1"
             else:
                 return to_return + str(verse["verse_number"] - 1)
-        else:
+        else:  # Give a url to the chapter that the verse is in
             to_return = (
                 to_return
                 + "/"
