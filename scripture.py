@@ -10,8 +10,7 @@ Includes: lists of dicts representing verses:
 
 Functions for doing things:
     get_random_verse: returns a psuedo-random verse
-    generate_churchofjesuschrist_url:
-    Generate the url to a verse or chapter
+    generate_scripture_url: Generate the url to a verse or chapter
 """
 # pylint: disable=C0103
 import json
@@ -58,7 +57,7 @@ def get_random_verse(volume_id="all"):
         raise TypeError
 
 
-def generate_churchofjesuschrist_url(location, chapter=False):
+def generate_scripture_url(location, chapter=False):
     """Generate a url to the actual scripture."""
     to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
     if isinstance(location, dict) and "volume_lds_url" in location:
