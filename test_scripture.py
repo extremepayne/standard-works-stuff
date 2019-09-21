@@ -50,5 +50,5 @@ study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
     assert (
         first_ch_url
         == "https://www.churchofjesuschrist.org/\
-study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
+study/scriptures/bofm/1-ne/1"
     )
