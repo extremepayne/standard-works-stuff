@@ -93,5 +93,6 @@ def generate_churchofjesuschrist_url(location, chapter=False):
                 + "/"
                 + str(verse["chapter_number"])
             )
+            return to_return
     else:  # Hope they gave us a volume string
         return to_return + location

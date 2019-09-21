@@ -41,8 +41,14 @@ def test_generate_churchofjesuschrist_url():
     assert "/" + my_random_verse["book_lds_url"] + "/" in my_url
     first_verse = scripture.book_of_mormon[0]
     first_verse_url = scripture.generate_churchofjesuschrist_url(first_verse)
+    first_ch_url = scripture.generate_churchofjesuschrist_url(first_verse, chapter=True)
     assert (
         first_verse_url
+        == "https://www.churchofjesuschrist.org/\
+study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
+    )
+    assert (
+        first_ch_url
         == "https://www.churchofjesuschrist.org/\
 study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
     )

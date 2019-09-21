@@ -6,7 +6,7 @@ from textwrap import wrap
 rand_verse = scripture.get_random_verse()
 print("Random verse: ")
 wrapped_verse = wrap(rand_verse["scripture_text"])
-print(rand_verse["verse_title"], end = ":")
+print(rand_verse["verse_title"], end=": ")
 for line in wrapped_verse:
     print(line)
 print(scripture.generate_churchofjesuschrist_url(rand_verse))
