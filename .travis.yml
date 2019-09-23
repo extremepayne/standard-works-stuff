@@ -8,14 +8,15 @@ matrix:
       dist: xenial
       install:
         - pip3 install --upgrade pip
-        - pip3 install flake8 pydocstyle
+        - pip3 install flake8 pydocstyle black
     - name: "Python nightly on Xenial Linux"
       python: "nightly"
       dist: xenial
       install:
         - pip3 install --upgrade pip
-        - pip3 install flake8 pydocstyle
+        - pip3 install flake8 pydocstyle black
 script:
   - pytest
   - flake8 scripture.py verse.py test_scripture.py
   - pydocstyle scripture.py
+  - black --check .
