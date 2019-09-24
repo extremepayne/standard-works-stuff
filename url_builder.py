@@ -1,4 +1,5 @@
 import scripture
+from textwrap import wrap
 
 
 def ask(prompt, type_=None, min_=None, max_=None, range_=None):
@@ -47,7 +48,30 @@ for vol in scripture.books_of_scripture:
 volume = ask("Pick one: ", type_=int, min_=1, max_=5)
 
 i = 0
-for book in scripture.books_of_scripture[volume]:
-    print(i)
-    i += 1
+books_in_vol = []
+books_in_vol_url = []
+for verse in scripture.books_of_scripture[volume]:
+    if verse["book_lds_url"] not in books_in_vol_url:
+        books_in_vol_url.append(verse["book_lds_url"])
+        books_in_vol.append(verse["book_title"].lower())
+
+print("Choose from the lsit below:")
+books_string = ""
+for book in books_in_vol:
+    if len(book) < 10:
+        books_string += book + "\t\t"
+    else:
+        books_string += book + "\t"
+for line in wrap(books_string):
+    print(line)
+book = ask("Choice: ", type_=str, range_=books_in_vol)
+chapter = ask("Input a chapter: ", type_=int, min_=1)
+url_dictionary = {
+    "volume_lds_url": str(volume),
+    "book_lds_url": book,
+    "chapter_number": chapter,
+}
+url = scripture.generate_scripture_url(url_dictionary, chapter=True)
+print(url)
+# print(books_in_vol_url)
 # print(volume_urls)
