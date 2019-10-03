@@ -15,6 +15,7 @@ Functions for doing things:
 # pylint: disable=C0103
 import json
 import random
+from textwrap import wrap
 
 file_path = "lds-scriptures.json"
 
@@ -41,20 +42,6 @@ with open(file_path, "r") as scripture_file:
         scriptures.append(verse)
         books_of_scripture[verse["volume_id"]].append(verse)
         i += 1
-
-
-def get_random_verse(volume_id="all"):
-    """
-    Produce a random verse.
-
-    Can be from all standard works (default) or a specific one.
-    """
-    if volume_id == "all":
-        return random.choice(scriptures)
-    elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
-        return random.choice(books_of_scripture[volume_id])
-    else:
-        raise TypeError
 
 
 def generate_scripture_url(location, chapter=False):
@@ -95,3 +82,40 @@ def generate_scripture_url(location, chapter=False):
             return to_return
     else:  # Hope they gave us a volume string
         return to_return + location
+
+
+class Verse:
+    def __init__(self, verse_dict):
+        self.verse_dictionary = verse_dict
+        self.id = verse_dict["verse_id"]
+        self.text = verse_dict["scripture_text"]
+        self.title = verse_dict["verse_title"]
+        self.url = generate_scripture_url(verse_dict)
+
+    def __str__(self):
+        out = ""
+        wrapped_verse = wrap(self.text)
+        out += self.title + ": \n"
+        for line in wrapped_verse:
+            out += line + "\n"
+        return out + self.url
+
+
+scriptures_objects = []
+for verse_dictionary in scriptures:
+    verse_object = Verse(verse_dictionary)
+    scriptures_objects.append(verse_object)
+
+
+def get_random_verse(volume_id="all"):
+    """
+    Produce a random verse.
+
+    Can be from all standard works (default) or a specific one.
+    """
+    if volume_id == "all":
+        return random.choice(scriptures_objects)
+    elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
+        return random.choice(books_of_scripture[volume_id])
+    else:
+        raise TypeError
