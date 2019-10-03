@@ -85,7 +85,10 @@ def generate_scripture_url(location, chapter=False):
 
 
 class Verse:
+    """A verse of scripture."""
+
     def __init__(self, verse_dict):
+        """Initialize a verse."""
         self.verse_dictionary = verse_dict
         self.id = verse_dict["verse_id"]
         self.text = verse_dict["scripture_text"]
@@ -93,6 +96,7 @@ class Verse:
         self.url = generate_scripture_url(verse_dict)
 
     def __str__(self):
+        """Print out the verse's title, text, and url."""
         out = ""
         wrapped_verse = wrap(self.text)
         out += self.title + ": \n"
