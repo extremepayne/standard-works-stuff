@@ -94,6 +94,7 @@ class Verse:
         self.text = verse_dict["scripture_text"]
         self.title = verse_dict["verse_title"]
         self.url = generate_scripture_url(verse_dict)
+        self.chapter = None
 
     def __str__(self):
         """Print out the verse's title, text, and url."""
@@ -105,10 +106,29 @@ class Verse:
         return out + self.url
 
 
+class Chapter:
+    """A chapter of scripture."""
+
+    def __init__(self, id, verses):
+        """Initialize a chapter."""
+        self.id = id
+        self.verses = verses
+        for verse in verses:
+            verse.chapter = self
+
+
 scriptures_objects = []
+chapter_objects = []
 for verse_dictionary in scriptures:
     verse_object = Verse(verse_dictionary)
     scriptures_objects.append(verse_object)
+    done = False
+    for chapter_object in chapter_objects:
+        if chapter_object.title == verse_object:
+            done = True
+            break
+    if not done:
+        chapter_object = Chapter(verse_dictionary["chapter_id"], [])
 
 
 def get_random_verse(volume_id="all"):
