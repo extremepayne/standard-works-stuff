@@ -1,7 +1,13 @@
 #!bin/bash
 pytest --cov=./
 PYTEST_EXIT_STATUS=$?
-python3 -m flake8
+python3 --version
+if ! [ $? -eq 127 ]
+then
+  python3 -m flake8
+else
+  flake8
+fi
 FLAKE8_EXIT_STATUS=$?
 pydocstyle scripture.py
 PYDOC_EXIT_STATUS=$?
