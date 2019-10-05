@@ -44,46 +44,6 @@ with open(file_path, "r") as scripture_file:
         i += 1
 
 
-def generate_scripture_url(location, chapter=False):
-    """Generate a url to the actual scripture."""
-    to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-    if isinstance(location, dict) and "volume_lds_url" in location:
-        verse = location
-        # We assume that the location provided is a verse dcitionary
-        if verse["volume_lds_url"] == "bm":
-            to_return += "bofm"
-        elif verse["volume_lds_url"] == "dc":
-            to_return += "dc-testament"
-        else:
-            to_return += verse["volume_lds_url"]
-        if not chapter:
-            to_return = (
-                to_return
-                + "/"
-                + verse["book_lds_url"]
-                + "/"
-                + str(verse["chapter_number"])
-                + "."
-                + str(verse["verse_number"])
-                + "?lang=eng#"
-            )
-            if verse["verse_number"] == 1:
-                return to_return + "p1"
-            else:
-                return to_return + str(verse["verse_number"] - 1)
-        else:  # Give a url to the chapter that the verse is in
-            to_return = (
-                to_return
-                + "/"
-                + verse["book_lds_url"]
-                + "/"
-                + str(verse["chapter_number"])
-            )
-            return to_return
-    else:  # Hope they gave us a volume string
-        return to_return + location
-
-
 class Verse:
     """A verse of scripture."""
 
@@ -93,7 +53,7 @@ class Verse:
         self.id = verse_dict["verse_id"]
         self.text = verse_dict["scripture_text"]
         self.title = verse_dict["verse_title"]
-        self.url = generate_scripture_url(verse_dict)
+        self.url = self.gen_url()
         self.chapter = None
 
     def __str__(self):
@@ -104,6 +64,30 @@ class Verse:
         for line in wrapped_verse:
             out += line + "\n"
         return out + self.url
+
+    def gen_url(self):
+        """Generate this verse's churchofjesuschrist.org url."""
+        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
+        if self.verse_dictionary["volume_lds_url"] == "bm":
+            to_return += "bofm"
+        elif self.verse_dictionary["volume_lds_url"] == "dc":
+            to_return += "dc-testament"
+        else:
+            to_return += self.verse_dictionary["volume_lds_url"]
+        to_return = (
+            to_return
+            + "/"
+            + self.verse_dictionary["book_lds_url"]
+            + "/"
+            + str(self.verse_dictionary["chapter_number"])
+            + "."
+            + str(self.verse_dictionary["verse_number"])
+            + "?lang=eng#"
+        )
+        if self.verse_dictionary["verse_number"] == 1:
+            return to_return + "p1"
+        else:
+            return to_return + str(self.verse_dictionary["verse_number"] - 1)
 
 
 class Chapter:

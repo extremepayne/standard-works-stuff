@@ -33,23 +33,3 @@ def test_get_random_verse():
     assert isinstance(my_random_verse, scripture.Verse)
     assert "scripture_text" in my_random_verse.verse_dictionary
     assert my_random_verse.text != ""
-
-
-def test_generate_scripture_url():
-    my_random_verse = scripture.get_random_verse()
-    my_url = scripture.generate_scripture_url(my_random_verse.verse_dictionary)
-    assert "https://www.churchofjesuschrist.org/study/scriptures/" in my_url
-    assert "/" + my_random_verse.verse_dictionary["book_lds_url"] + "/" in my_url
-    first_verse = scripture.book_of_mormon[0]
-    first_verse_url = scripture.generate_scripture_url(first_verse)
-    first_ch_url = scripture.generate_scripture_url(first_verse, chapter=True)
-    assert (
-        first_verse_url
-        == "https://www.churchofjesuschrist.org/\
-study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
-    )
-    assert (
-        first_ch_url
-        == "https://www.churchofjesuschrist.org/\
-study/scriptures/bofm/1-ne/1"
-    )
