@@ -116,19 +116,28 @@ class Chapter:
         for verse in verses:
             verse.chapter = self
 
+    def __str__(self):
+        """Return chapter id."""
+        return str(self.id)
+
 
 scriptures_objects = []
 chapter_objects = []
+verses_in_chapters = {}
+biggest_chapter_id = 0
+
 for verse_dictionary in scriptures:
-    verse_object = Verse(verse_dictionary)
-    scriptures_objects.append(verse_object)
-    done = False
-    for chapter_object in chapter_objects:
-        if chapter_object.title == verse_object:
-            done = True
-            break
-    if not done:
-        chapter_object = Chapter(verse_dictionary["chapter_id"], [])
+    new_verse = Verse(verse_dictionary)
+    scriptures_objects.append(new_verse)
+    if verse_dictionary["chapter_id"] > biggest_chapter_id:
+        verses_in_chapters[verse_dictionary["chapter_id"]] = []
+        biggest_chapter_id = verse_dictionary["chapter_id"]
+    verses_in_chapters[verse_dictionary["chapter_id"]].append(new_verse)
+
+for i in range(1, biggest_chapter_id + 1):
+    new_chapter = Chapter(i, verses_in_chapters[i])
+    chapter_objects.append(new_chapter)
+print(scriptures_objects[1900].chapter)
 
 
 def get_random_verse(volume_id="all"):
