@@ -44,7 +44,37 @@ with open(file_path, "r") as scripture_file:
         i += 1
 
 
-class Verse:
+class Chapter():
+    """A chapter of scripture."""
+
+    def __init__(self, id, verses):
+        """Initialize a chapter."""
+        self.id = id
+        self.verses = verses
+        for verse in verses:
+            verse.chapter = self
+        self.book_lds_url = verses[0].book_lds_url
+        self.volume_lds_url = verses[0].volume_lds_url
+        self.ch_num = verses[0].ch_num
+
+    def __str__(self):
+        """Return chapter id."""
+        return str(self.id)
+
+    def gen_url(self):
+        """Generate this verse's churchofjesuschrist.org url."""
+        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
+        if self.volume_lds_url == "bm":
+            to_return += "bofm"
+        elif self.volume_lds_url == "dc":
+            to_return += "dc-testament"
+        else:
+            to_return += self.volume_lds_url
+        to_return = to_return + "/" + self.book_lds_url + "/" + str(self.ch_num)
+        return to_return
+
+
+class Verse(Chapter):
     """A verse of scripture."""
 
     def __init__(self, verse_dict):
@@ -53,8 +83,11 @@ class Verse:
         self.id = verse_dict["verse_id"]
         self.text = verse_dict["scripture_text"]
         self.title = verse_dict["verse_title"]
-        self.url = self.gen_url()
+        self.book_lds_url = verse_dict["book_lds_url"]
+        self.volume_lds_url = verse_dict["volume_lds_url"]
+        self.ch_num = verse_dict["chapter_number"]
         self.chapter = None
+        self.url = self.gen_url()
 
     def __str__(self):
         """Print out the verse's title, text, and url."""
@@ -67,42 +100,14 @@ class Verse:
 
     def gen_url(self):
         """Generate this verse's churchofjesuschrist.org url."""
-        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-        if self.verse_dictionary["volume_lds_url"] == "bm":
-            to_return += "bofm"
-        elif self.verse_dictionary["volume_lds_url"] == "dc":
-            to_return += "dc-testament"
-        else:
-            to_return += self.verse_dictionary["volume_lds_url"]
+        to_return = super().gen_url()
         to_return = (
-            to_return
-            + "/"
-            + self.verse_dictionary["book_lds_url"]
-            + "/"
-            + str(self.verse_dictionary["chapter_number"])
-            + "."
-            + str(self.verse_dictionary["verse_number"])
-            + "?lang=eng#"
+            to_return + "." + str(self.verse_dictionary["verse_number"]) + "?lang=eng#"
         )
         if self.verse_dictionary["verse_number"] == 1:
             return to_return + "p1"
         else:
             return to_return + str(self.verse_dictionary["verse_number"] - 1)
-
-
-class Chapter:
-    """A chapter of scripture."""
-
-    def __init__(self, id, verses):
-        """Initialize a chapter."""
-        self.id = id
-        self.verses = verses
-        for verse in verses:
-            verse.chapter = self
-
-    def __str__(self):
-        """Return chapter id."""
-        return str(self.id)
 
 
 scriptures_objects = []
@@ -121,7 +126,6 @@ for verse_dictionary in scriptures:
 for i in range(1, biggest_chapter_id + 1):
     new_chapter = Chapter(i, verses_in_chapters[i])
     chapter_objects.append(new_chapter)
-print(scriptures_objects[1900].chapter)
 
 
 def get_random_verse(volume_id="all"):
