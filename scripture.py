@@ -44,7 +44,7 @@ with open(file_path, "r") as scripture_file:
         i += 1
 
 
-class Chapter():
+class Chapter:
     """A chapter of scripture."""
 
     def __init__(self, id, verses):
