@@ -15,6 +15,7 @@ Functions for doing things:
 # pylint: disable=C0103
 import json
 import random
+from textwrap import wrap
 
 file_path = "lds-scriptures.json"
 
@@ -43,6 +44,90 @@ with open(file_path, "r") as scripture_file:
         i += 1
 
 
+class Chapter:
+    """A chapter of scripture."""
+
+    def __init__(self, ch_id, verses):
+        """Initialize a chapter."""
+        self.ch_id = ch_id
+        self.verses = verses
+        for verse in verses:
+            verse.chapter = self
+        self.book_lds_url = verses[0].book_lds_url
+        self.volume_lds_url = verses[0].volume_lds_url
+        self.ch_num = verses[0].ch_num
+
+    def __str__(self):
+        """Return chapter id."""
+        return str(self.ch_id)
+
+    def gen_url(self):
+        """Generate this verse's churchofjesuschrist.org url."""
+        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
+        if self.volume_lds_url == "bm":
+            to_return += "bofm"
+        elif self.volume_lds_url == "dc":
+            to_return += "dc-testament"
+        else:
+            to_return += self.volume_lds_url
+        to_return = to_return + "/" + self.book_lds_url + "/" + str(self.ch_num)
+        return to_return
+
+
+class Verse(Chapter):
+    """A verse of scripture."""
+
+    def __init__(self, verse_dict):
+        """Initialize a verse."""
+        self.verse_dictionary = verse_dict
+        self.id = verse_dict["verse_id"]
+        self.text = verse_dict["scripture_text"]
+        self.title = verse_dict["verse_title"]
+        self.book_lds_url = verse_dict["book_lds_url"]
+        self.volume_lds_url = verse_dict["volume_lds_url"]
+        self.ch_num = verse_dict["chapter_number"]
+        self.chapter = None
+        self.url = self.gen_url()
+
+    def __str__(self):
+        """Print out the verse's title, text, and url."""
+        out = ""
+        wrapped_verse = wrap(self.text)
+        out += self.title + ": \n"
+        for line in wrapped_verse:
+            out += line + "\n"
+        return out + self.url
+
+    def gen_url(self):
+        """Generate this verse's churchofjesuschrist.org url."""
+        to_return = super().gen_url()
+        to_return = (
+            to_return + "." + str(self.verse_dictionary["verse_number"]) + "?lang=eng#"
+        )
+        if self.verse_dictionary["verse_number"] == 1:
+            return to_return + "p1"
+        else:
+            return to_return + str(self.verse_dictionary["verse_number"] - 1)
+
+
+scriptures_objects = []
+chapter_objects = []
+verses_in_chapters = {}
+biggest_chapter_id = 0
+
+for verse_dictionary in scriptures:
+    new_verse = Verse(verse_dictionary)
+    scriptures_objects.append(new_verse)
+    if verse_dictionary["chapter_id"] > biggest_chapter_id:
+        verses_in_chapters[verse_dictionary["chapter_id"]] = []
+        biggest_chapter_id = verse_dictionary["chapter_id"]
+    verses_in_chapters[verse_dictionary["chapter_id"]].append(new_verse)
+
+for i in range(1, biggest_chapter_id + 1):
+    new_chapter = Chapter(i, verses_in_chapters[i])
+    chapter_objects.append(new_chapter)
+
+
 def get_random_verse(volume_id="all"):
     """
     Produce a random verse.
@@ -50,48 +135,8 @@ def get_random_verse(volume_id="all"):
     Can be from all standard works (default) or a specific one.
     """
     if volume_id == "all":
-        return random.choice(scriptures)
+        return random.choice(scriptures_objects)
     elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
         return random.choice(books_of_scripture[volume_id])
     else:
         raise TypeError
-
-
-def generate_scripture_url(location, chapter=False):
-    """Generate a url to the actual scripture."""
-    to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-    if isinstance(location, dict) and "volume_lds_url" in location:
-        verse = location
-        # We assume that the location provided is a verse dcitionary
-        if verse["volume_lds_url"] == "bm":
-            to_return += "bofm"
-        elif verse["volume_lds_url"] == "dc":
-            to_return += "dc-testament"
-        else:
-            to_return += verse["volume_lds_url"]
-        if not chapter:
-            to_return = (
-                to_return
-                + "/"
-                + verse["book_lds_url"]
-                + "/"
-                + str(verse["chapter_number"])
-                + "."
-                + str(verse["verse_number"])
-                + "?lang=eng#"
-            )
-            if verse["verse_number"] == 1:
-                return to_return + "p1"
-            else:
-                return to_return + str(verse["verse_number"] - 1)
-        else:  # Give a url to the chapter that the verse is in
-            to_return = (
-                to_return
-                + "/"
-                + verse["book_lds_url"]
-                + "/"
-                + str(verse["chapter_number"])
-            )
-            return to_return
-    else:  # Hope they gave us a volume string
-        return to_return + location

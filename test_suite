@@ -1,0 +1,51 @@
+#!bin/bash
+pytest --cov=./
+PYTEST_EXIT_STATUS=$?
+coverage run verse.py
+UNITTEST_EXIT_STATUS=$?
+python3 --version
+if ! [ $? -eq 127 ]
+then
+  python3 -m flake8
+else
+  flake8
+fi
+FLAKE8_EXIT_STATUS=$?
+pydocstyle scripture.py
+PYDOC_EXIT_STATUS=$?
+black --check .
+BLACK_EXIT_STATUS=$?
+echo "======Summary====="
+if [ $PYTEST_EXIT_STATUS -eq 0 ] && [ $UNITTEST_EXIT_STATUS -eq 0 ]
+then
+  tput setaf 2
+  echo "Tests passed"
+else
+  tput setaf 1
+  echo "Tests failed"
+fi
+if [ $FLAKE8_EXIT_STATUS -eq 0 ]
+then
+  tput setaf 2
+  echo "Flake8 likes it"
+else
+  tput setaf 1
+  echo "Flake8 complains"
+fi
+if [ $PYDOC_EXIT_STATUS -eq 0 ]
+then
+  tput setaf 2
+  echo "PEP 257 likes it"
+else
+  tput setaf 1
+  echo "PEP 257 complains"
+fi
+if [ $BLACK_EXIT_STATUS -eq 0 ]
+then
+  tput setaf 2
+  echo "Black likes it"
+else
+  tput setaf 1
+  echo "Black complains"
+fi
+tput setaf 9
