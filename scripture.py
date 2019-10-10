@@ -47,9 +47,9 @@ with open(file_path, "r") as scripture_file:
 class Chapter:
     """A chapter of scripture."""
 
-    def __init__(self, id, verses):
+    def __init__(self, ch_id, verses):
         """Initialize a chapter."""
-        self.id = id
+        self.ch_id = ch_id
         self.verses = verses
         for verse in verses:
             verse.chapter = self
@@ -59,7 +59,7 @@ class Chapter:
 
     def __str__(self):
         """Return chapter id."""
-        return str(self.id)
+        return str(self.ch_id)
 
     def gen_url(self):
         """Generate this verse's churchofjesuschrist.org url."""
