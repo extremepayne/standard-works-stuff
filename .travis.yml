@@ -5,36 +5,54 @@ matrix:
   include:
     - name: "Python 3.7.x on Xenial Linux"
       python: 3.7
-      dist: xenial
       install:
         - pip3 install --upgrade pip
         - pip3 install flake8 pydocstyle black
         - pip3 install pytest-cov codecov coverage
+      script:
+        - pytest --cov=./
+        - coverage run verse.py
+        - flake8
+        - pydocstyle scripture.py
+        - black --check .
+        - codecov
     - name: "Python 3.6.x on Xenial Linux"
       python: 3.6
-      dist: xenial
       install:
         - pip3 install --upgrade pip
         - pip3 install flake8 pydocstyle black
         - pip3 install pytest-cov codecov coverage
+      script:
+        - pytest --cov=./
+        - coverage run verse.py
+        - flake8
+        - pydocstyle scripture.py
+        - black --check .
+        - codecov
     - name: "Python 3.5.x on Xenial Linux"
       python: 3.5
-      dist: xenial
       install:
         - pip3 install --upgrade pip
-        - pip3 install flake8 pydocstyle black
+        - pip3 install flake8 pydocstyle # Black only runs on 3.6+ and I'm too lazy to set up pyenvs.
         - pip3 install pytest-cov codecov coverage
+      script:
+        - pytest --cov=./
+        - coverage run verse.py
+        - flake8
+        - pydocstyle scripture.py
+        - codecov
     - name: "Python nightly on Xenial Linux"
       python: "nightly"
-      dist: xenial
       install:
         - pip3 install --upgrade pip
         - pip3 install flake8 pydocstyle black
         - pip3 install pytest-cov codecov coverage
-script:
-  - pytest --cov=./
-  - coverage run verse.py
-  - flake8
-  - pydocstyle scripture.py
-  - black --check .
-  - codecov
+      script:
+        - pytest --cov=./
+        - coverage run verse.py
+        - flake8
+        - pydocstyle scripture.py
+        - black --check .
+        - codecov
+dist: xenial
+
