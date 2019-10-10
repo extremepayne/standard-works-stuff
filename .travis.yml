@@ -10,6 +10,20 @@ matrix:
         - pip3 install --upgrade pip
         - pip3 install flake8 pydocstyle black
         - pip3 install pytest-cov codecov coverage
+    - name: "Python 3.6.x on Xenial Linux"
+      python: 3.6
+      dist: xenial
+      install:
+        - pip3 install --upgrade pip
+        - pip3 install flake8 pydocstyle black
+        - pip3 install pytest-cov codecov coverage
+    - name: "Python 3.5.x on Xenial Linux"
+      python: 3.5
+      dist: xenial
+      install:
+        - pip3 install --upgrade pip
+        - pip3 install flake8 pydocstyle black
+        - pip3 install pytest-cov codecov coverage
     - name: "Python nightly on Xenial Linux"
       python: "nightly"
       dist: xenial
