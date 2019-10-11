@@ -1,4 +1,5 @@
 import scripture
+import pytest
 
 
 def test_sciptures():
@@ -33,3 +34,14 @@ def test_get_random_verse():
     assert isinstance(my_random_verse, scripture.Verse)
     assert "scripture_text" in my_random_verse.verse_dictionary
     assert my_random_verse.text != ""
+    with pytest.raises(TypeError):
+        my_random_verse = scripture.get_random_verse(17.2)
+    my_volume = 1
+    my_random_verse = scripture.get_random_verse(my_volume)
+    assert my_random_verse.verse_dictionary["volume_id"] == my_volume
+
+
+def test_chapter_printing():
+    my_chapter = scripture.chapter_objects[0]
+    print(my_chapter)
+    assert my_chapter.ch_id == 1

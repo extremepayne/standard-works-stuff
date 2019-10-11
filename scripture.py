@@ -114,10 +114,23 @@ scriptures_objects = []
 chapter_objects = []
 verses_in_chapters = {}
 biggest_chapter_id = 0
+old_test_objs = []
+new_test_objs = []
+book_of_m_objs = []
+d_and_c_objs = []
+p_of_g_p_objs = []
+books_of_objs = {
+    1: old_test_objs,
+    2: new_test_objs,
+    3: book_of_m_objs,
+    4: d_and_c_objs,
+    5: p_of_g_p_objs,
+}
 
 for verse_dictionary in scriptures:
     new_verse = Verse(verse_dictionary)
     scriptures_objects.append(new_verse)
+    books_of_objs[new_verse.verse_dictionary["volume_id"]].append(new_verse)
     if verse_dictionary["chapter_id"] > biggest_chapter_id:
         verses_in_chapters[verse_dictionary["chapter_id"]] = []
         biggest_chapter_id = verse_dictionary["chapter_id"]
@@ -137,6 +150,6 @@ def get_random_verse(volume_id="all"):
     if volume_id == "all":
         return random.choice(scriptures_objects)
     elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
-        return random.choice(books_of_scripture[volume_id])
+        return random.choice(books_of_objs[volume_id])
     else:
         raise TypeError
