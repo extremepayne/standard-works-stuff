@@ -11,7 +11,7 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run verse.py
+        - coverage run -a verse.py
         - flake8
         - pydocstyle scripture.py
         - black --check .
@@ -24,7 +24,7 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run verse.py
+        - coverage run -a verse.py
         - flake8
         - pydocstyle scripture.py
         - black --check .
@@ -37,7 +37,7 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run verse.py
+        - coverage run -a verse.py
         - flake8
         - pydocstyle scripture.py
         - codecov
@@ -49,7 +49,7 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run verse.py
+        - coverage run -a verse.py
         - flake8
         - pydocstyle scripture.py
         - black --check .
