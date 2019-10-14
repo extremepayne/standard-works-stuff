@@ -1,17 +1,4 @@
-"""
-Defines a python interface for interacting with the scriptures.
-
-Includes: lists of dicts representing verses:
-    scriptures: all standard works
-    book_of_mormon: only verses from the BoM
-    doctrine_and_covenants: only verses from the D&C
-    new_testament: only verses from the NT
-    old_testament: only verses from the OT
-
-Functions for doing things:
-    get_random_verse: returns a psuedo-random verse
-    generate_scripture_url: Generate the url to a verse or chapter
-"""
+"""Defines a python interface for interacting with the scriptures."""
 # pylint: disable=C0103
 import json
 import random
@@ -20,18 +7,6 @@ from textwrap import wrap
 file_path = "lds-scriptures.json"
 
 scriptures = []
-book_of_mormon = []
-doctrine_and_covenants = []
-new_testament = []
-old_testament = []
-pearl_of_great_price = []
-books_of_scripture = {
-    1: old_testament,
-    2: new_testament,
-    3: book_of_mormon,
-    4: doctrine_and_covenants,
-    5: pearl_of_great_price,
-}
 
 with open(file_path, "r") as scripture_file:
     length_of_file = len(open(file_path).readlines())
@@ -40,11 +15,18 @@ with open(file_path, "r") as scripture_file:
         verse = scripture_file.readline()
         verse = json.loads(verse)
         scriptures.append(verse)
-        books_of_scripture[verse["volume_id"]].append(verse)
         i += 1
 
 
-class Chapter:
+class Book:
+    """A book of scripture."""
+
+    def __init__(self):
+        """."""
+        pass
+
+
+class Chapter(Book):
     """A chapter of scripture."""
 
     def __init__(self, ch_id, verses):
@@ -114,23 +96,23 @@ scriptures_objects = []
 chapter_objects = []
 verses_in_chapters = {}
 biggest_chapter_id = 0
-old_test_objs = []
-new_test_objs = []
-book_of_m_objs = []
-d_and_c_objs = []
-p_of_g_p_objs = []
-books_of_objs = {
-    1: old_test_objs,
-    2: new_test_objs,
-    3: book_of_m_objs,
-    4: d_and_c_objs,
-    5: p_of_g_p_objs,
+book_of_mormon = []
+doctrine_and_covenants = []
+new_testament = []
+old_testament = []
+pearl_of_great_price = []
+books_of_scripture = {
+    1: old_testament,
+    2: new_testament,
+    3: book_of_mormon,
+    4: doctrine_and_covenants,
+    5: pearl_of_great_price,
 }
 
 for verse_dictionary in scriptures:
     new_verse = Verse(verse_dictionary)
     scriptures_objects.append(new_verse)
-    books_of_objs[new_verse.verse_dictionary["volume_id"]].append(new_verse)
+    books_of_scripture[new_verse.verse_dictionary["volume_id"]].append(new_verse)
     if verse_dictionary["chapter_id"] > biggest_chapter_id:
         verses_in_chapters[verse_dictionary["chapter_id"]] = []
         biggest_chapter_id = verse_dictionary["chapter_id"]
@@ -150,6 +132,6 @@ def get_random_verse(volume_id="all"):
     if volume_id == "all":
         return random.choice(scriptures_objects)
     elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
-        return random.choice(books_of_objs[volume_id])
+        return random.choice(books_of_scripture[volume_id])
     else:
         raise TypeError

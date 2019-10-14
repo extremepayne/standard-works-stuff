@@ -2,7 +2,7 @@
 pytest --cov=./
 PYTEST_EXIT_STATUS=$?
 coverage run verse.py
-UNITTEST_EXIT_STATUS=$?
+TEST_EXIT_STATUS=$?
 python3 --version
 if ! [ $? -eq 127 ]
 then
@@ -16,7 +16,7 @@ PYDOC_EXIT_STATUS=$?
 black --check .
 BLACK_EXIT_STATUS=$?
 echo "======Summary====="
-if [ $PYTEST_EXIT_STATUS -eq 0 ] && [ $UNITTEST_EXIT_STATUS -eq 0 ]
+if [ $PYTEST_EXIT_STATUS -eq 0 ] && [ $TEST_EXIT_STATUS -eq 0 ]
 then
   tput setaf 2
   echo "Tests passed"

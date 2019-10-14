@@ -1,4 +1,4 @@
-"""select a random verse"""
+"""Select a random verse."""
 import scripture
 
 rand_verse = scripture.get_random_verse()
