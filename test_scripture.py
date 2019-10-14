@@ -51,3 +51,9 @@ def test_book_printing():
     my_book = scripture.books[0]
     print(my_book)
     assert my_book.bk_id == 1
+
+
+def test_volume_printing():
+    my_volume = scripture.volumes[0]
+    print(my_volume)
+    assert my_volume.vol_id == 1

@@ -20,7 +20,43 @@ with open(file_path, "r") as scripture_file:
 
 
 # Define classes
-class Book:
+class Volume:
+    """A volume of scripture."""
+
+    def __init__(self, vol_id, verses):
+        """Initialize a volume."""
+        self.vol_id = vol_id
+        self.verses = verses
+        self.chapters = []
+        self.books = []
+        for verse in verses:
+            verse.volume = self
+            if verse.chapter not in self.chapters:
+                self.chapters.append(verse.chapter)
+                verse.chapter.volume = self
+            if verse.book not in self.books:
+                self.books.append(verse.book)
+                verse.book.volume = self
+        self.volume_lds_url = verses[0].volume_lds_url
+        self.name = verses[0].verse_dictionary["volume_title"]
+
+    def __str__(self):
+        """Return volume title."""
+        return self.name
+
+    def gen_url(self):
+        """Generate this volume's churchofjesuschrist.org url."""
+        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
+        if self.volume_lds_url == "bm":
+            to_return += "bofm"
+        elif self.volume_lds_url == "dc":
+            to_return += "dc-testament"
+        else:
+            to_return += self.volume_lds_url
+        return to_return
+
+
+class Book(Volume):
     """A book of scripture."""
 
     def __init__(self, bk_id, verses):
@@ -35,22 +71,17 @@ class Book:
                 verse.chapter.book = self
         self.book_lds_url = verses[0].book_lds_url
         self.volume_lds_url = verses[0].volume_lds_url
+        self.name = verses[0].verse_dictionary["book_title"]
+        self.volume = None
 
     def __str__(self):
-        """Return book id."""
-        return str(self.bk_id)
+        """Return book title."""
+        return self.name
 
     def gen_url(self):
-        """Generate this verse's churchofjesuschrist.org url."""
-        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-        if self.volume_lds_url == "bm":
-            to_return += "bofm"
-        elif self.volume_lds_url == "dc":
-            to_return += "dc-testament"
-        else:
-            to_return += self.volume_lds_url
-        to_return = to_return + "/" + self.book_lds_url
-        return to_return
+        """Generate this book's churchofjesuschrist.org url."""
+        to_return = super().gen_url()
+        return to_return + "/" + self.book_lds_url
 
 
 class Chapter(Book):
@@ -66,6 +97,7 @@ class Chapter(Book):
         self.volume_lds_url = verses[0].volume_lds_url
         self.ch_num = verses[0].ch_num
         self.book = None
+        self.volume = None
 
     def __str__(self):
         """Return chapter id."""
@@ -91,6 +123,7 @@ class Verse(Chapter):
         self.ch_num = verse_dict["chapter_number"]
         self.chapter = None
         self.book = None
+        self.volume = None
         self.url = self.gen_url()
 
     def __str__(self):
@@ -119,6 +152,7 @@ class Verse(Chapter):
 scriptures_objects = []
 chapters = []
 books = []
+volumes = []
 verses_in_chapters = {}
 verses_in_books = {}
 biggest_chapter_id = 0
@@ -156,6 +190,12 @@ for i in range(1, biggest_chapter_id + 1):
 for i in range(1, biggest_book_id + 1):
     new_book = Book(i, verses_in_books[i])
     books.append(new_book)
+
+i = 1
+for volume in books_of_scripture:
+    new_volume = Volume(i, books_of_scripture[i])
+    volumes.append(new_volume)
+    i += 1
 
 
 # Define method
