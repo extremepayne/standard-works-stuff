@@ -4,6 +4,7 @@ import json
 import random
 from textwrap import wrap
 
+# Read JSON file into dicts
 file_path = "lds-scriptures.json"
 
 scriptures = []
@@ -18,12 +19,69 @@ with open(file_path, "r") as scripture_file:
         i += 1
 
 
-class Book:
+# Define classes
+class Volume:
+    """A volume of scripture."""
+
+    def __init__(self, vol_id, verses):
+        """Initialize a volume."""
+        self.vol_id = vol_id
+        self.verses = verses
+        self.chapters = []
+        self.books = []
+        for verse in verses:
+            verse.volume = self
+            if verse.chapter not in self.chapters:
+                self.chapters.append(verse.chapter)
+                verse.chapter.volume = self
+            if verse.book not in self.books:
+                self.books.append(verse.book)
+                verse.book.volume = self
+        self.volume_lds_url = verses[0].volume_lds_url
+        self.name = verses[0].verse_dictionary["volume_title"]
+
+    def __str__(self):
+        """Return volume title."""
+        return self.name
+
+    def gen_url(self):
+        """Generate this volume's churchofjesuschrist.org url."""
+        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
+        if self.volume_lds_url == "bm":
+            to_return += "bofm"
+        elif self.volume_lds_url == "dc":
+            to_return += "dc-testament"
+        else:
+            to_return += self.volume_lds_url
+        return to_return
+
+
+class Book(Volume):
     """A book of scripture."""
 
-    def __init__(self):
-        """."""
-        pass
+    def __init__(self, bk_id, verses):
+        """Initialize a book."""
+        self.bk_id = bk_id
+        self.verses = verses
+        self.chapters = []
+        for verse in verses:
+            verse.book = self
+            if verse.chapter not in self.chapters:
+                self.chapters.append(verse.chapter)
+                verse.chapter.book = self
+        self.book_lds_url = verses[0].book_lds_url
+        self.volume_lds_url = verses[0].volume_lds_url
+        self.name = verses[0].verse_dictionary["book_title"]
+        self.volume = None
+
+    def __str__(self):
+        """Return book title."""
+        return self.name
+
+    def gen_url(self):
+        """Generate this book's churchofjesuschrist.org url."""
+        to_return = super().gen_url()
+        return to_return + "/" + self.book_lds_url
 
 
 class Chapter(Book):
@@ -38,22 +96,17 @@ class Chapter(Book):
         self.book_lds_url = verses[0].book_lds_url
         self.volume_lds_url = verses[0].volume_lds_url
         self.ch_num = verses[0].ch_num
+        self.book = None
+        self.volume = None
 
     def __str__(self):
         """Return chapter id."""
         return str(self.ch_id)
 
     def gen_url(self):
-        """Generate this verse's churchofjesuschrist.org url."""
-        to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
-        if self.volume_lds_url == "bm":
-            to_return += "bofm"
-        elif self.volume_lds_url == "dc":
-            to_return += "dc-testament"
-        else:
-            to_return += self.volume_lds_url
-        to_return = to_return + "/" + self.book_lds_url + "/" + str(self.ch_num)
-        return to_return
+        """Generate this chapters' churchofjesuschrist.org url."""
+        to_return = super().gen_url()
+        return to_return + "/" + str(self.ch_num)
 
 
 class Verse(Chapter):
@@ -69,6 +122,8 @@ class Verse(Chapter):
         self.volume_lds_url = verse_dict["volume_lds_url"]
         self.ch_num = verse_dict["chapter_number"]
         self.chapter = None
+        self.book = None
+        self.volume = None
         self.url = self.gen_url()
 
     def __str__(self):
@@ -83,6 +138,7 @@ class Verse(Chapter):
     def gen_url(self):
         """Generate this verse's churchofjesuschrist.org url."""
         to_return = super().gen_url()
+        # Each url is just an extension on its superclass's url.
         to_return = (
             to_return + "." + str(self.verse_dictionary["verse_number"]) + "?lang=eng#"
         )
@@ -92,10 +148,15 @@ class Verse(Chapter):
             return to_return + str(self.verse_dictionary["verse_number"] - 1)
 
 
+# Unpack JSON-y dicts into objects
 scriptures_objects = []
-chapter_objects = []
+chapters = []
+books = []
+volumes = []
 verses_in_chapters = {}
+verses_in_books = {}
 biggest_chapter_id = 0
+biggest_book_id = 0
 book_of_mormon = []
 doctrine_and_covenants = []
 new_testament = []
@@ -117,12 +178,27 @@ for verse_dictionary in scriptures:
         verses_in_chapters[verse_dictionary["chapter_id"]] = []
         biggest_chapter_id = verse_dictionary["chapter_id"]
     verses_in_chapters[verse_dictionary["chapter_id"]].append(new_verse)
+    if verse_dictionary["book_id"] > biggest_book_id:
+        verses_in_books[verse_dictionary["book_id"]] = []
+        biggest_book_id = verse_dictionary["book_id"]
+    verses_in_books[verse_dictionary["book_id"]].append(new_verse)
 
 for i in range(1, biggest_chapter_id + 1):
     new_chapter = Chapter(i, verses_in_chapters[i])
-    chapter_objects.append(new_chapter)
+    chapters.append(new_chapter)
+
+for i in range(1, biggest_book_id + 1):
+    new_book = Book(i, verses_in_books[i])
+    books.append(new_book)
+
+i = 1
+for volume in books_of_scripture:
+    new_volume = Volume(i, books_of_scripture[i])
+    volumes.append(new_volume)
+    i += 1
 
 
+# Define method
 def get_random_verse(volume_id="all"):
     """
     Produce a random verse.
@@ -134,4 +210,4 @@ def get_random_verse(volume_id="all"):
     elif isinstance(volume_id, int) and volume_id >= 1 and volume_id <= 5:
         return random.choice(books_of_scripture[volume_id])
     else:
-        raise TypeError
+        raise ValueError

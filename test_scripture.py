@@ -34,7 +34,7 @@ def test_get_random_verse():
     assert isinstance(my_random_verse, scripture.Verse)
     assert "scripture_text" in my_random_verse.verse_dictionary
     assert my_random_verse.text != ""
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         my_random_verse = scripture.get_random_verse(17.2)
     my_volume = 1
     my_random_verse = scripture.get_random_verse(my_volume)
@@ -42,6 +42,18 @@ def test_get_random_verse():
 
 
 def test_chapter_printing():
-    my_chapter = scripture.chapter_objects[0]
+    my_chapter = scripture.chapters[0]
     print(my_chapter)
     assert my_chapter.ch_id == 1
+
+
+def test_book_printing():
+    my_book = scripture.books[0]
+    print(my_book)
+    assert my_book.bk_id == 1
+
+
+def test_volume_printing():
+    my_volume = scripture.volumes[0]
+    print(my_volume)
+    assert my_volume.vol_id == 1
