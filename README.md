@@ -9,4 +9,9 @@ This program does not express the official views of the Church of Jesus Christ o
 ## Acknowledgments
 This project depends on the [LDS documentation Project](https://github.com/mormon-documentation-project/lds-scriptures), and since that project is in the public domain, the JSON file of the scriptures is packaged directly into this repo. In the same spirit of goodwill, I chose to use a public domain license for this project as well.
 
+## Contributing
+Click the button below to begin developing.
+
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/extremepayne/standard-works-stuff)
+
+Run `./test_suite` before committing.
