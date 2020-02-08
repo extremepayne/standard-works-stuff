@@ -3,4 +3,4 @@ import scripture
 
 rand_verse = scripture.get_random_verse()
 print("Random verse: ")
-print(rand_verse)
+print(scripture.pretty_print_verse(rand_verse))
