@@ -10,7 +10,7 @@ file_path = "lds-scriptures.json"
 def get_random_verse():
     """Produce a random verse."""
     with open(file_path, "r") as scripture_file:
-        file_list = open(file_path).readlines()
+        file_list = scripture_file.readlines()
         length_of_file = len(file_list)
         verse_number = random.randint(0, length_of_file)
         verse_json = file_list[verse_number]
@@ -19,6 +19,7 @@ def get_random_verse():
 
 
 def pretty_print_verse(verse):
+    """Given a verse in dictionary form, return a nice-looking string."""
     to_return = verse["verse_title"]
     to_return += ": \n"
     wrapped_verse = textwrap.wrap(verse["scripture_text"])
