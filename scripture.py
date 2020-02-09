@@ -6,6 +6,7 @@ import textwrap
 
 file_path = "lds-scriptures.json"
 
+
 def get_random_verse():
     """Produce a random verse."""
     with open(file_path, "r") as scripture_file:
@@ -15,7 +16,8 @@ def get_random_verse():
         verse_json = file_list[verse_number]
         verse = json.loads(verse_json)
     return verse
-    
+
+
 def pretty_print_verse(verse):
     to_return = verse["verse_title"]
     to_return += ": \n"
