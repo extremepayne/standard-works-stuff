@@ -105,3 +105,6 @@ venv.bak/
 
 # Theia project settings
 .theia/
+bin/
+pyvenv.cfg
+lib64/
