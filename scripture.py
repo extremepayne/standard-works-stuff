@@ -1,4 +1,4 @@
-"""Defines a python interface for interacting with the scriptures."""
+"""The underlying methods to get a random verse."""
 # pylint: disable=C0103
 import json
 import random
@@ -25,4 +25,24 @@ def pretty_print_verse(verse):
     wrapped_verse = textwrap.wrap(verse["scripture_text"])
     for line in wrapped_verse:
         to_return += line + "\n"
+    to_return += generate_scripture_url(verse)
     return to_return
+
+
+def generate_scripture_url(verse):
+    """Generates a verse's churchofjesuschrist url."""
+    to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
+    if verse["volume_lds_url"] == "bm":
+        to_return += "bofm"
+    elif verse["volume_lds_url"] == "dc":
+        to_return += "dc-testament"
+    else:
+        to_return += verse["volume_lds_url"]
+    to_return += "/" + verse["book_lds_url"]
+    to_return += "/" + str(verse["chapter_number"])
+    to_return = (
+        to_return + "." + str(verse["verse_number"]) + "?lang=eng#"
+        )
+    if verse["verse_number"] == 1:
+        return to_return + "p1"
+    return to_return + str(verse["verse_number"] - 1)
