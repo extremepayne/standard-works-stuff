@@ -30,7 +30,7 @@ def pretty_print_verse(verse):
 
 
 def generate_scripture_url(verse):
-    """Generates a verse's churchofjesuschrist url."""
+    """Generate a verse's churchofjesuschrist url."""
     to_return = "https://www.churchofjesuschrist.org/study/scriptures/"
     if verse["volume_lds_url"] == "bm":
         to_return += "bofm"
@@ -40,9 +40,7 @@ def generate_scripture_url(verse):
         to_return += verse["volume_lds_url"]
     to_return += "/" + verse["book_lds_url"]
     to_return += "/" + str(verse["chapter_number"])
-    to_return = (
-        to_return + "." + str(verse["verse_number"]) + "?lang=eng#"
-        )
+    to_return = to_return + "." + str(verse["verse_number"]) + "?lang=eng#"
     if verse["verse_number"] == 1:
         return to_return + "p1"
     return to_return + str(verse["verse_number"] - 1)
