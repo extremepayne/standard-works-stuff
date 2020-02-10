@@ -44,3 +44,8 @@ def generate_scripture_url(verse):
     if verse["verse_number"] == 1:
         return to_return + "p1"
     return to_return + str(verse["verse_number"] - 1)
+
+
+rand_verse = get_random_verse()
+print("Random verse: ")
+print(pretty_print_verse(rand_verse))
