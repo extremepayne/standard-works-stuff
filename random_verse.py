@@ -1,4 +1,4 @@
-"""The underlying methods to get a random verse."""
+"""Choose and pretty-print a random verse of scripture."""
 # pylint: disable=C0103
 import json
 import random
@@ -8,7 +8,7 @@ file_path = "lds-scriptures.json"
 
 
 def get_random_verse():
-    """Produce a random verse."""
+    """Pick a random verse."""
     with open(file_path, "r") as scripture_file:
         file_list = scripture_file.readlines()
         length_of_file = len(file_list)
@@ -46,6 +46,7 @@ def generate_scripture_url(verse):
     return to_return + str(verse["verse_number"] - 1)
 
 
-rand_verse = get_random_verse()
-print("Random verse: ")
-print(pretty_print_verse(rand_verse))
+if __name__ == "__main__":
+    rand_verse = get_random_verse()
+    print("Random verse: ")
+    print(pretty_print_verse(rand_verse))
