@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Choose and pretty-print a random verse of scripture."""
 # pylint: disable=C0103
 import json
