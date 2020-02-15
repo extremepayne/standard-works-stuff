@@ -107,4 +107,4 @@ venv.bak/
 .theia/
 bin/
 pyvenv.cfg
-lib64/
+lib64
