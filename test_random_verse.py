@@ -24,10 +24,10 @@ def test_generate_scripture_url():
         "volume_lds_url": "bm",
         "book_lds_url": "1-ne",
         "chapter_number": 1,
-        "verse_number": 7,
+        "verse_number": 1,
     }
     url2 = "https://www.churchofjesuschrist.org\
-/study/scriptures/bofm/1-ne/1.7?lang=eng#6"
+/study/scriptures/bofm/1-ne/1.1?lang=eng#p1"
     assert random_verse.generate_scripture_url(verse2) == url2
     verse3 = {
         "volume_lds_url": "dc",
