@@ -1,17 +1,17 @@
 #!/bin/bash
-pytest --cov=./
+pytest test_random_verse.py --cov=./
 PYTEST_EXIT_STATUS=$?
-coverage run verse.py
+coverage run random_verse.py
 TEST_EXIT_STATUS=$?
 python3 --version
 if ! [ $? -eq 127 ]
 then
-  python3 -m flake8
+  python3 -m flake8 random_verse.py test_random_verse.py
 else
-  flake8
+  flake8 random_verse.py test_random_verse.py
 fi
 FLAKE8_EXIT_STATUS=$?
-pydocstyle scripture.py
+pydocstyle random_verse.py
 PYDOC_EXIT_STATUS=$?
 black --check .
 BLACK_EXIT_STATUS=$?

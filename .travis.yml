@@ -11,9 +11,9 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run -a verse.py
+        - coverage run -a random_verse.py
         - flake8
-        - pydocstyle scripture.py
+        - pydocstyle random_verse.py
         - black --check .
         - codecov
     - name: "Python 3.6.x on Xenial Linux"
@@ -24,9 +24,9 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run -a verse.py
+        - coverage run -a random_verse.py
         - flake8
-        - pydocstyle scripture.py
+        - pydocstyle random_verse.py
         - black --check .
         - codecov
     - name: "Python 3.5.x on Xenial Linux"
@@ -37,9 +37,9 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run -a verse.py
+        - coverage run -a random_verse.py
         - flake8
-        - pydocstyle scripture.py
+        - pydocstyle random_verse.py
         - codecov
     - name: "Python nightly on Xenial Linux"
       python: "nightly"
@@ -49,9 +49,9 @@ matrix:
         - pip3 install pytest-cov codecov coverage
       script:
         - pytest --cov=./
-        - coverage run -a verse.py
+        - coverage run -a random_verse.py
         - flake8
-        - pydocstyle scripture.py
+        - pydocstyle random_verse.py
         - black --check .
         - codecov
 dist: xenial
