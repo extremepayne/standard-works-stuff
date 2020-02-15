@@ -12,9 +12,7 @@ def get_random_verse():
     """Pick a random verse."""
     with open(file_path, "r") as scripture_file:
         file_list = scripture_file.readlines()
-        length_of_file = len(file_list)
-        verse_number = random.randint(0, length_of_file)
-        verse_json = file_list[verse_number]
+        verse_json = random.choice(file_list)
         verse = json.loads(verse_json)
     return verse
 
